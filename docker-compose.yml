@@ -1,0 +1,20 @@
+version: '3.4' # docker compose version
+
+services:
+  # container name
+  curl_chrome:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: $CONTAINER_IMAGE
+    container_name: $CONTAINER_NAME
+    volumes:
+      - $PWD:/app
+    working_dir: /app
+    command: ["--host", "0.0.0.0", "main:app", "--reload"]
+
+    ports:
+      - "$EXPOSE_PORT:$EXPOSE_PORT"
+#    restart: always
+
+
