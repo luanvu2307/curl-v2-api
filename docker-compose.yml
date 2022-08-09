@@ -1,4 +1,4 @@
-version: '3.4' # docker compose version
+version: '3.8' # docker compose version
 
 services:
   # container name
@@ -10,8 +10,8 @@ services:
     container_name: $CONTAINER_NAME
     volumes:
       - $PWD:/app
-    working_dir: /app
-    command: ["--host", "0.0.0.0", "main:app", "--reload"]
+    # working_dir: /app
+    command: uvicorn --host 0.0.0.0 --port $EXPOSE_PORT main:app  --reload
 
     ports:
       - "$EXPOSE_PORT:$EXPOSE_PORT"

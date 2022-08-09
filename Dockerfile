@@ -37,7 +37,7 @@ RUN bash run.sh
 ENV PYTHONUNBUFFERED=1
 ENV PORT 2307
 EXPOSE 2307
-
+WORKDIR /app
 COPY gunicorn-config.py ./
+ENTRYPOINT ["uvicorn"]
 CMD exec gunicorn main:app -c ./gunicorn-config.py
-# CMD ["/bin/bash"]
