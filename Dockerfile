@@ -28,16 +28,22 @@ RUN bash configure --enable-optimizations
 RUN make -j 12
 RUN make altinstall
 
-COPY requirements.txt .
-RUN python3.9 -m pip install -r requirements.txt
-
 COPY curl-install /home/
 WORKDIR /home/
 RUN bash run.sh
+
+
 ENV PYTHONUNBUFFERED=1
+
+ENV APP_HOME /app
+WORKDIR $APP_HOME
+COPY . ./
+
+RUN python3.9 -m pip install -r requirements.txt
+
 ENV PORT 2307
-EXPOSE 2307
-WORKDIR /app
-COPY gunicorn-config.py ./
-ENTRYPOINT ["uvicorn"]
-CMD exec gunicorn main:app -c ./gunicorn-config.py
+EXPOSE $PORT
+
+# COPY gunicorn-config.py ./
+
+CMD exec uvicorn main:app --host 0.0.0.0 --port $PORT --workers 1

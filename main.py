@@ -20,7 +20,11 @@ app = FastAPI(
 @app.post("/curl_chrome101", response_model=ResponseModel)
 async def predict(input_map: schemas.AISchema) -> ResponseModel:
     response_str, stderr = call_api_via_curl_v2(input_map.proxy, input_map.url, input_map.header)
-    return create_response(status_code=200, content=response_str)
+    result = {
+        "stdout": response_str,
+        "stderr": stderr
+    }
+    return create_response(status_code=200, content=result)
 
 if __name__ == '__main__':
         app.run(debug=True, host='0.0.0.0', port=int(os.environ.get('PORT', 2307)))

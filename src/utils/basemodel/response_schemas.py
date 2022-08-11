@@ -3,13 +3,14 @@ from typing import Any
 
 from pydantic import BaseModel
 from fastapi.encoders import jsonable_encoder
+from fastapi.responses import JSONResponse
 
 
 def create_response(status_code: int, content: Any):
     content = jsonable_encoder(content)
-    # content = json.dumps(content, ensure_ascii=True, sort_keys=True, indent=4)
-
-    return ResponseModel(status_code=status_code, content=content)
+    
+    return JSONResponse(status_code=status_code, content=content)
+ 
 
 
 class ResponseCode:
@@ -18,7 +19,6 @@ class ResponseCode:
 
 
 class ResponseModel(BaseModel):
-    status_code: int
     content: Any
 
     class Config:
